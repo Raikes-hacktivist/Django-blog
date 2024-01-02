@@ -1,0 +1,17 @@
+{% load blog_tags %}
+
+
+<ul>
+{% for post in latestposts %}
+  <li>
+    <a href="{{ post.get_absolute_url }}">{{ post.title }}</a>
+  </li>
+  <br/>
+  {% if post.image %}
+  <div class="view overlay">
+    <img class="img-fluid" src="{{post.image.url}}" alt="Responsive image">
+  </div>
+  {% endif %}
+  {{ post.body|markdown|truncatewords_html:20 }}
+{% endfor %}   
+</ul>

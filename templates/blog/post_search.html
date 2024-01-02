@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link href="{% static 'css/blog.css' %}" rel ="stylesheet">
+
+  </head>
+ 
+
+  {% block content %}
+     
+     {% if searched %}
+  
+     <br/>
+     {% for post in posts %}
+     <h2><a href="{{ post.get_absolute_url }}">{{ post.title }}</a></h2>
+
+    <p class="tags">
+      Tags:
+      {% for tag in post.tags.all %}
+          <a href="{% url 'blog:post_list_by_tag' tag.slug %}">{{ tag.name }}</a>
+          {% if not forloop.last %}, {% endif %}
+      {% endfor %}
+    </p>
+
+     {% if post.image %}
+        <div class="view overlay">
+           <img class="img-fluid" src="{{post.image.url}}" alt="Responsive image">
+        </div>
+    {% endif %}
+
+    <p class="date">Published {{ post.publish }} by {{ post.author }}</p>
+    
+
+     <p>{{ post.body }}</p>
+    <br/>
+     {% endfor %}
+
+     {% else %}
+       <h1>Hey! You Forgot To Search For A Post...</h1>
+     {% endif %}
+
+     
+
+  {% endblock %}
